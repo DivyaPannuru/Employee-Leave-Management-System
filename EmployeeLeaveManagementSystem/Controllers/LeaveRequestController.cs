@@ -24,12 +24,20 @@ namespace EmployeeLeaveManagementSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateLeaveRequest([FromBody] LeaveRequest leaveRequest)
+        public IActionResult CreateLeaveRequest([FromBody] LeaveForm leaveRequest)
         {
-            _context.LeaveRequests.Add(leaveRequest);
+            var leaveRequests = new LeaveRequest();
+            leaveRequests.EmployeeId = leaveRequest.EmployeeId;
+            leaveRequests.StartDate= leaveRequest.StartDate;
+            leaveRequests.EndDate = leaveRequest.endDate;
+            leaveRequests.NoOfLeaves = leaveRequest.Quanity;
+            leaveRequests.Reason = leaveRequest.Reason;
+            leaveRequests.Status = "Submitted"; //Approve /Reject
+            _context.LeaveRequests.Add(leaveRequests);
             _context.SaveChanges();
             return Ok(leaveRequest);
         }
+       
     }
 
 }

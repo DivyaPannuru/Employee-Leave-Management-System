@@ -11,10 +11,11 @@ namespace EmployeeLeaveManagementSystem.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _config;
-
-        public AuthController(IConfiguration config)
+        private readonly ApplicationDbContext _context;
+        public AuthController(IConfiguration config, ApplicationDbContext context)
         {
             _config = config;
+            _context = context;
         }
 
         [HttpPost("login")]
@@ -32,8 +33,15 @@ namespace EmployeeLeaveManagementSystem.Controllers
 
         private User Authenticate(UserLogin userLogin)
         {
+            var User = (from a in _context.Users
+                         where a.Username == userLogin.Username && a.Password == userLogin.Password
+                         select new User
+                         {
+                             Username = a.Username,
+                             Password =a.Password
+                         }).FirstOrDefault();
             // Replace with your user authentication logic
-            if (userLogin.Username == "test" && userLogin.Password == "password")
+            if (User !=null)
             {
                 return new User { Username = userLogin.Username };
             }
