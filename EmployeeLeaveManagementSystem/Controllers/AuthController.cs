@@ -25,7 +25,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
             if (user != null)
             {
                 var token = GenerateToken(user);
-                return Ok(new { token });
+                return Ok(new { token,user });
             }
 
             return Unauthorized();
