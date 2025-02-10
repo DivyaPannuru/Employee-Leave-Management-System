@@ -5,7 +5,7 @@
             public int Id { get; set; }
             public string Username { get; set; }
             public string Password { get; set; } // Note: Use a secure method to store passwords in production
-            public string UserRole { get; set; }
+            public string? UserRole { get; set; }
          
 
     }

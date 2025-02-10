@@ -20,10 +20,11 @@ namespace EmployeeLeaveManagementSystem.Controllers
         {
 
             var Approvalform = (from a in _context.LeaveRequests
+                                join b in _context.Employees on a.EmployeeId equals b.Id
                                 where a.Status == "Submitted"
                                 select new ApprovalForm
                                 {
-                                    EmployeeID = a.EmployeeId,
+                                    EmployeeName = b.FirstName +" " + b.LastName,
                                     StartDate = a.StartDate,
                                     EndDate = a.EndDate,
                                     Status = a.Status

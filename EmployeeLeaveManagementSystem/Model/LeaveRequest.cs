@@ -30,6 +30,7 @@ namespace EmployeeLeaveManagementSystem.Model
         public int id { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public string EmployeeName { get; set; }
         public int EmployeeID { get; set; }
         public required string Status { get; set; } 
     }
