@@ -10,5 +10,7 @@ namespace EmployeeLeaveManagementSystem
         public DbSet<Employee> Employees { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
         public DbSet<User> Users { get; set; }
+        
+        
     }
 }

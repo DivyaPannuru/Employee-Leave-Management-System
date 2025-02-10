@@ -11,4 +11,10 @@
         public int LeaveBalance { get; set; }   
 
     }
+    public class Register
+    {
+        public int Id { get; set; }
+        public Employee Employee { get; set; }
+        public User User { get; set; }
+    }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeLeaveManagementSystem.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class LeaveApprovalController : Controller

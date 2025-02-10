@@ -15,21 +15,28 @@ namespace EmployeeLeaveManagementSystem.Controllers
         {
             _context = context;
         }
-
+       [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult GetEmployees()
         {
             var employees = _context.Employees.ToList();
             return Ok(employees);
         }
-
-        [HttpPost]
-        public IActionResult CreateEmployee([FromBody] Employee employee)
+        [Authorize(Roles = "User")]
+        [HttpGet("id")]
+        public IActionResult GetEmployee(int id)
         {
-            _context.Employees.Add(employee);
-            _context.SaveChanges();
+            var employee = _context.Employees.SingleOrDefault(x => x.Id == id);
             return Ok(employee);
         }
+        //[Authorize(Roles = "Admin")]
+        //[HttpPost]
+        //public IActionResult CreateEmployee([FromBody] Employee employee)
+        //{
+        //    _context.Employees.Add(employee);
+        //    _context.SaveChanges();
+        //    return Ok(employee);
+        //}
     }
 
 }

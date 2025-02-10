@@ -11,6 +11,7 @@ namespace EmployeeLeaveManagementSystem.Model
         public string Reason { get; set; }
         public string Status { get; set; }
         public int NoOfLeaves {  get; set; }    
+        public int Leavetypeid { get; set; }
 
     }
     public class LeaveForm
@@ -31,5 +32,13 @@ namespace EmployeeLeaveManagementSystem.Model
         public DateTime EndDate { get; set; }
         public int EmployeeID { get; set; }
         public required string Status { get; set; } 
+    }
+    public class LeaveType
+    {
+        public int id { get; set; }
+        public required string LeaveTypeName
+        {
+            get; set;
+        }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using EmployeeLeaveManagementSystem.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace EmployeeLeaveManagementSystem.Controllers
@@ -19,7 +21,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] UserLogin userLogin)
+        public IActionResult Login([FromBody] User userLogin)
         {
             var user = Authenticate(userLogin);
             if (user != null)
@@ -31,37 +33,65 @@ namespace EmployeeLeaveManagementSystem.Controllers
             return Unauthorized();
         }
 
-        private User Authenticate(UserLogin userLogin)
+        private LoginUser Authenticate(User userLogin)
         {
+            
             var User = (from a in _context.Users
                          where a.Username == userLogin.Username && a.Password == userLogin.Password
+                        // && a.UserRole == userLogin.UserRole
                          select new User
                          {
                              Username = a.Username,
-                             Password =a.Password
+                            UserRole =a.UserRole
                          }).FirstOrDefault();
+            var roles = _context.Users.Where(a => a.Username == userLogin.Username && a.Password.Equals(userLogin.Password))
+                .Select(a => a.UserRole).ToList();
+            
             // Replace with your user authentication logic
             if (User !=null)
             {
-                return new User { Username = userLogin.Username };
+                //var claim = new List<Claim>()
+                //{
+                //   // new Claim(JwtRegisteredClaimNames.Sub,_config["Jwt:Subject"])
+                //   new Claim("id", User.Id.ToString()),
+                //   new Claim("Username", User.Username),
+                //   new Claim("Role", User.UserRole)
+                //};
+
+                return new LoginUser { Username = userLogin.Username , Roles=roles};
             }
 
             return null;
         }
 
-        private string GenerateToken(User user)
+        private string GenerateToken(LoginUser user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-                _config["Jwt:Audience"],
-                null,
+            var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim(ClaimTypes.Name, user.Username),
+    };
+           
+            // Add roles as claims if the user has roles
+            if (user.Roles != null && user.Roles.Any())
+            {
+                claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role)));
+            }
+
+            var token = new JwtSecurityToken(
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
+                claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
     }
 
 }
