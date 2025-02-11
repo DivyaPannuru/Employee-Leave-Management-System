@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeLeaveManagementSystem.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class LeaveRequestController : ControllerBase

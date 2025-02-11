@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeLeaveManagementSystem.Controllers
 {
-    [Authorize(Roles ="Admin")]
+   // [Authorize(Roles ="Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class LeaveApprovalController : Controller
@@ -16,28 +16,40 @@ namespace EmployeeLeaveManagementSystem.Controllers
 
         }
         [HttpGet]
-        public IActionResult GetLeaveDetails(ApprovalForm approvalForm)
+        public IActionResult GetLeaveDetails()
         {
 
             var Approvalform = (from a in _context.LeaveRequests
                                 join b in _context.Employees on a.EmployeeId equals b.Id
-                                where a.Status == "Submitted"
+                                where a.Status == "Submitted".ToLower()
                                 select new ApprovalForm
                                 {
                                     EmployeeName = b.FirstName +" " + b.LastName,
                                     StartDate = a.StartDate,
                                     EndDate = a.EndDate,
-                                    Status = a.Status
+                                    Status = a.Status,id=a.Id
                                 }).ToList();
-            return Ok(approvalForm);
+            return Ok(Approvalform);
         }
         [HttpPost]
         public IActionResult ApproveLeaveRequest( LeaveRequest leaveRequest)
         {
-            if (leaveRequest.Status == "Approved")
+            if (leaveRequest.Status == "Approved".ToLower())
+            { 
+                var getleaverequest = _context.LeaveRequests.Where(x => x.Id == leaveRequest.Id).Select(x => new LeaveRequest
             {
-                _context.LeaveRequests.Update(leaveRequest);
-                var employee = _context.Employees.FirstOrDefault(e => e.Id == leaveRequest.EmployeeId);
+                Id = x.Id,
+                StartDate= x.StartDate,
+                EmployeeId = x.EmployeeId,
+                EndDate= x.EndDate,
+                Status = leaveRequest.Status,
+                NoOfLeaves = x.NoOfLeaves,
+                Leavetypeid = x.Leavetypeid,
+                Reason = x.Reason
+            }).FirstOrDefault();
+                
+                _context.LeaveRequests.Update(getleaverequest);
+                var employee = _context.Employees.FirstOrDefault(e => e.Id == getleaverequest.EmployeeId);
                 if (employee == null)
                 {
                     return NotFound();
@@ -54,10 +66,11 @@ namespace EmployeeLeaveManagementSystem.Controllers
                 leaveRequest.Status = leaveRequest.Status;
                 employee.LeaveBalance -= leaveRequest.NoOfLeaves;
                 _context.SaveChanges();
-                return Ok(leaveRequest);
+                return Ok(getleaverequest);
             }
             else
             {
+                leaveRequest.Reason = "Default Reson";
                 _context.LeaveRequests.Update(leaveRequest);
                 _context.SaveChanges();
                 return Ok(leaveRequest);
