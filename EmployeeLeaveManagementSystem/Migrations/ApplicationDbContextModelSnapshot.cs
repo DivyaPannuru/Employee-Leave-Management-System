@@ -79,7 +79,6 @@ namespace EmployeeLeaveManagementSystem.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Reason")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
@@ -90,6 +89,8 @@ namespace EmployeeLeaveManagementSystem.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("LeaveRequests");
                 });
@@ -102,12 +103,14 @@ namespace EmployeeLeaveManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserRole")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
@@ -116,7 +119,39 @@ namespace EmployeeLeaveManagementSystem.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("EmployeeLeaveManagementSystem.Model.LeaveRequest", b =>
+                {
+                    b.HasOne("EmployeeLeaveManagementSystem.Model.Employee", "Employee")
+                        .WithMany("LeaveRequest")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("EmployeeLeaveManagementSystem.Model.User", b =>
+                {
+                    b.HasOne("EmployeeLeaveManagementSystem.Model.Employee", "Employee")
+                        .WithOne("User")
+                        .HasForeignKey("EmployeeLeaveManagementSystem.Model.User", "EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("EmployeeLeaveManagementSystem.Model.Employee", b =>
+                {
+                    b.Navigation("LeaveRequest");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

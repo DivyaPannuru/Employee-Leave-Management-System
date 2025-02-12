@@ -21,7 +21,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
 
             var Approvalform = (from a in _context.LeaveRequests
                                 join b in _context.Employees on a.EmployeeId equals b.Id
-                                where a.Status == "Submitted".ToLower()
+                                where a.Status == "Pending".ToLower()
                                 select new ApprovalForm
                                 {
                                     EmployeeName = b.FirstName +" " + b.LastName,

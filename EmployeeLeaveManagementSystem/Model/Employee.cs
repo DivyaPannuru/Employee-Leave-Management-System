@@ -8,8 +8,9 @@
         public string Email { get; set; }
         public string Phone { get; set; }
         public string OfficeAddress { get; set; }
-        public int LeaveBalance { get; set; }   
-
+        public int LeaveBalance { get; set; }
+        public User? User { get; internal set; }
+        public ICollection<LeaveRequest> LeaveRequest { get; set; }
     }
     public class Register
     {
