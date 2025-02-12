@@ -1,5 +1,6 @@
 ﻿using EmployeeLeaveManagementSystem.Model;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -21,7 +22,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] User userLogin)
+        public IActionResult Login([FromBody] LoginUser userLogin)
         {
             var user = Authenticate(userLogin);
             if (user != null)
@@ -33,7 +34,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
             return Unauthorized();
         }
 
-        private LoginUser Authenticate(User userLogin)
+        private LoginUser Authenticate(LoginUser userLogin)
         {
             
             var User = (from a in _context.Users
