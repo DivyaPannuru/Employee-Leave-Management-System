@@ -1,6 +1,6 @@
 export interface LeaveRequest {
     id: number;
-    employeeName: string;
+    employeeid: number;
     leaveType: 'Sick' | 'Vacation' | 'Other';
     startDate: string;
     endDate: string;
@@ -8,10 +8,10 @@ export interface LeaveRequest {
   }
 
   export interface LeaveApprove{
-    noOfLeaves: number;
-    id:number;
+       id:number;
     startDate:Date;
     endDate:Date;
     employeeName:string;
     status:string;
+    quantity:number;
   }
