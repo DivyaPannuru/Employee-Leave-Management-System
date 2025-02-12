@@ -35,6 +35,7 @@ namespace EmployeeLeaveManagementSystem.Model
         public string EmployeeName { get; set; }
         public int EmployeeID { get; set; }
         public required string Status { get; set; } 
+        public int Quantity { get; set; }
     }
     public class LeaveType
     {

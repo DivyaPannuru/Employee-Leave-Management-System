@@ -27,8 +27,19 @@ namespace EmployeeLeaveManagementSystem.Controllers
             var user = Authenticate(userLogin);
             if (user != null)
             {
+                var userdetails = (from a in _context.Users
+                                  join b in _context.Employees
+                                  on a.EmployeeId equals b.Id
+                                  where a.Username == user.Username
+                                  select new
+                                  {
+                                      username =a.Username,
+                                      Role =a.UserRole,
+                                      EmployeeID= a.EmployeeId,
+                                      EmployeeName = b.FirstName + b.LastName
+                                  }).FirstOrDefault();
                 var token = GenerateToken(user);
-                return Ok(new { token,user });
+                return Ok(new { token, userdetails });
             }
 
             return Unauthorized();

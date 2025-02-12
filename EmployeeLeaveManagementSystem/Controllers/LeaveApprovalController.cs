@@ -27,16 +27,17 @@ namespace EmployeeLeaveManagementSystem.Controllers
                                     EmployeeName = b.FirstName +" " + b.LastName,
                                     StartDate = a.StartDate,
                                     EndDate = a.EndDate,
-                                    Status = a.Status,id=a.Id
+                                    Status = a.Status,id=a.Id,
+                                    Quantity = a.NoOfLeaves
                                 }).ToList();
             return Ok(Approvalform);
         }
         [HttpPost]
-        public IActionResult ApproveLeaveRequest( LeaveRequest leaveRequest)
+        public IActionResult ApproveLeaveRequest(ApprovalForm leaveRequest)
         {
             if (leaveRequest.Status == "Approved".ToLower())
             { 
-                var getleaverequest = _context.LeaveRequests.Where(x => x.Id == leaveRequest.Id).Select(x => new LeaveRequest
+                var getleaverequest = _context.LeaveRequests.Where(x => x.Id == leaveRequest.id).Select(x => new LeaveRequest
             {
                 Id = x.Id,
                 StartDate= x.StartDate,
@@ -56,7 +57,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
                 }
 
                 // Check if the employee has enough leave days
-                if (employee.LeaveBalance < leaveRequest.NoOfLeaves)
+                if (employee.LeaveBalance < leaveRequest.Quantity)
                 {
                     return BadRequest("Insufficient leave balance.");
                 }
@@ -64,14 +65,14 @@ namespace EmployeeLeaveManagementSystem.Controllers
                 // Approve the leave request and update the employee's leave count
                 // leaveRequest.IsApproved = true;
                 leaveRequest.Status = leaveRequest.Status;
-                employee.LeaveBalance -= leaveRequest.NoOfLeaves;
+                employee.LeaveBalance -= leaveRequest.Quantity;
                 _context.SaveChanges();
                 return Ok(getleaverequest);
             }
             else
             {
-                leaveRequest.Reason = "Default Reson";
-                _context.LeaveRequests.Update(leaveRequest);
+                //leaveRequest.Reason = "Default Reson";
+                //_context.LeaveRequests.Update(q);
                 _context.SaveChanges();
                 return Ok(leaveRequest);
             }

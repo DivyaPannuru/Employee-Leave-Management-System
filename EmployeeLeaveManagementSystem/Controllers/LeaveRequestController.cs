@@ -32,7 +32,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
             leaveRequests.EndDate = leaveRequest.endDate;
             leaveRequests.NoOfLeaves = leaveRequest.Quanity;
             leaveRequests.Reason = leaveRequest.Reason;
-            leaveRequests.Status = "Submitted"; //Approve /Reject
+            leaveRequests.Status = "Pending"; //Approve /Reject
             _context.LeaveRequests.Add(leaveRequests);
             _context.SaveChanges();
             return Ok(leaveRequest);
