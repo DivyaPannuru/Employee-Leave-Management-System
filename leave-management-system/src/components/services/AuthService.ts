@@ -17,7 +17,7 @@ const AuthService = {
         localStorage.removeItem("auth");
         localStorage.removeItem("username");
 
-        localStorage.removeItem("role");
+        localStorage.removeItem("Role");
     },
 
     isAuthenticated: () => localStorage.getItem("username") != null ,

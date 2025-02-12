@@ -29,6 +29,11 @@ const LeaveRequestForm: React.FC = () => {
     }
   };
 
+  function GetNumberofLeaves(): React.ReactNode {
+   
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <div>
       <h2>Leave Request Form</h2>
@@ -59,6 +64,9 @@ const LeaveRequestForm: React.FC = () => {
             <ErrorMessage name="endDate" component="div" />
           </div>
           <button type="submit">Submit</button>
+          <div>
+            <label >Quantity {GetNumberofLeaves()}</label> 
+          </div>
         </Form>
       </Formik>
       {message && <p>{message}</p>}

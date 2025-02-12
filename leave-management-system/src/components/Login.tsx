@@ -39,13 +39,14 @@ const Login: React.FC = () => {
       if (response.ok) {
         const jsonResponse = await response.json();
         setData(jsonResponse);
-        console.info(jsonResponse.user.roles[0]);
+       // console.info(jsonResponse.user.roles[0]);
         localStorage.setItem("token",jsonResponse.token);
-        localStorage.setItem("username",jsonResponse.user.username)
+        localStorage.setItem("username",jsonResponse.userdetails.username)
       // var auth= AuthService.isAuthenticated();
         //localStorage.setItem("Role",jsonResponse.user.Roles)
        // setRoles(data?.Roles);
-        localStorage.setItem('Role', jsonResponse.user.roles[0])
+        localStorage.setItem('Role', jsonResponse.userdetails.role)
+        localStorage.setItem("employeeid",jsonResponse.userdetails.employeeID)
           if(localStorage.getItem("Role")==="Admin"){
         //   <h1>I</h1>
          navigate("/admin-dashboard", { replace: true });

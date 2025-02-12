@@ -14,7 +14,8 @@ const ApproveLeave =() =>
         employeeName: "",
         status: "",
         startDate: new Date(),
-        endDate: new Date()
+        endDate: new Date(),
+        quantity:0
     });
   useEffect(()=>
 {
@@ -51,7 +52,7 @@ const updateEmployee = (id: number) => {
     })
         .then(() => {
             setLeaveApprove(LeaveApprove.map((emp) => (emp.id === id ? { ...updatedForm, id } : emp)));
-            setForm({ id: 0, employeeName: "", status: "", startDate: new Date(), endDate: new Date() });
+            setForm({ id: 0, employeeName: "", status: "", startDate: new Date(), endDate: new Date(),quantity:0 });
         })
         .catch((error) => console.error(error));
 };
@@ -78,7 +79,7 @@ const updateEmployee = (id: number) => {
                <td>{new Date(leave.startDate).toLocaleDateString()}</td>
                 <td>{new Date(leave.endDate).toLocaleDateString()}</td> 
                                <td>{leave.status}</td>
-                               <td>{leave.noOfLeaves}</td>
+                               <td>{leave.quantity}</td>
                 <td> <button className="btn btn-sm" onClick={()=>updateEmployee(leave.id)}>Approve</button> 
                 <button className="btn btn-denger">Reject</button></td>
         
