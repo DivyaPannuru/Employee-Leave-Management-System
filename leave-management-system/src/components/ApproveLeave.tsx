@@ -39,8 +39,8 @@ const ApproveLeave =() =>
     }
     fetchData();
 })
-const updateEmployee = (id: number) => {
-    const updatedForm = { ...form, status: "approved",id:id };
+const updateEmployee = (id: number, approveStatus: string) => {
+    const updatedForm = { ...form, status:approveStatus ,id:id };
     console.log(updatedForm);
     fetch(`${"http://localhost:5224/api/LeaveApproval"}`, {
         method: 'POST',
@@ -80,8 +80,8 @@ const updateEmployee = (id: number) => {
                 <td>{new Date(leave.endDate).toLocaleDateString()}</td> 
                                <td>{leave.status}</td>
                                <td>{leave.quantity}</td>
-                <td> <button className="btn btn-sm" onClick={()=>updateEmployee(leave.id)}>Approve</button> 
-                <button className="btn btn-denger">Reject</button></td>
+                <td> <button className="btn btn-sm" onClick={()=>updateEmployee(leave.id,"approved")}>Approve</button> 
+                <button className="btn btn-denger" onClick={()=>updateEmployee(leave.id,"Rejected")}>Reject</button></td>
         
 </tr>
         )
