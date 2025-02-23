@@ -1,4 +1,4 @@
-.grid-container {
+/* .grid-container {
     display: grid;
     grid-template-columns: auto auto auto;
     background-color: #2196F3;
@@ -106,7 +106,7 @@ tr:nth-child(even) {
   .submit-btn:hover {
     background-color: #45a049;
   }
-  
+   */
   /* Leave Requests Table */
   .leave-requests-container table {
     width: 100%;
