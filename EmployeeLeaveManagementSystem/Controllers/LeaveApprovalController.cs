@@ -23,7 +23,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
                                 where a.Status == "Submitted"
                                 select new ApprovalForm
                                 {
-                                    EmployeeID = a.EmployeeId,
+                                    //EmployeeID = a.EmployeeId,
                                     StartDate = a.StartDate,
                                     EndDate = a.EndDate,
                                     Status = a.Status
@@ -36,7 +36,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
             if (leaveRequest.Status == "Approved")
             {
                 _context.LeaveRequests.Update(leaveRequest);
-                var employee = _context.Employees.FirstOrDefault(e => e.Id == leaveRequest.EmployeeId);
+                var employee = _context.Employees.FirstOrDefault(e => e.Id == leaveRequest.UserId);
                 if (employee == null)
                 {
                     return NotFound();

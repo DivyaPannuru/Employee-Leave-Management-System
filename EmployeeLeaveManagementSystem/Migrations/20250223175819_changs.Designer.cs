@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeLeaveManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250205092800_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250223175819_changs")]
+    partial class changs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,9 +69,6 @@ namespace EmployeeLeaveManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
@@ -89,6 +86,9 @@ namespace EmployeeLeaveManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("LeaveRequests");
@@ -104,6 +104,18 @@ namespace EmployeeLeaveManagementSystem.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PendingOtherLeaves")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PendingSickLeaves")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PendingVacationLeaves")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserRole")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
