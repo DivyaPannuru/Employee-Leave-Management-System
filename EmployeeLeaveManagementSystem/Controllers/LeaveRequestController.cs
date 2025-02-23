@@ -27,7 +27,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
         public IActionResult CreateLeaveRequest([FromBody] LeaveForm leaveRequest)
         {
             var leaveRequests = new LeaveRequest();
-            leaveRequests.EmployeeId = leaveRequest.EmployeeId;
+            //leaveRequests.EmployeeId = leaveRequest.EmployeeId;
             leaveRequests.StartDate= leaveRequest.StartDate;
             leaveRequests.EndDate = leaveRequest.endDate;
             leaveRequests.NoOfLeaves = leaveRequest.Quanity;
