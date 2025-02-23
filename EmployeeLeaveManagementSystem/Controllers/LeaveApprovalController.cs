@@ -64,7 +64,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
 
                 // Approve the leave request and update the employee's leave count
                 // leaveRequest.IsApproved = true;
-                leaveRequest.Status = leaveRequest.Status;
+               // leaveRequest.Status = leaveRequest.Status;
                 employee.LeaveBalance -= leaveRequest.Quantity;
                 _context.SaveChanges();
                 return Ok(getleaverequest);
@@ -73,6 +73,18 @@ namespace EmployeeLeaveManagementSystem.Controllers
             {
                 //leaveRequest.Reason = "Default Reson";
                 //_context.LeaveRequests.Update(q);
+                var getleaverequest = _context.LeaveRequests.Where(x => x.Id == leaveRequest.id).Select(x => new LeaveRequest
+                {
+                    Id = x.Id,
+                    StartDate = x.StartDate,
+                    EmployeeId = x.EmployeeId,
+                    EndDate = x.EndDate,
+                    Status = leaveRequest.Status,
+                    NoOfLeaves = x.NoOfLeaves,
+                    Leavetypeid = x.Leavetypeid,
+                    Reason = x.Reason
+                }).FirstOrDefault();
+                _context.LeaveRequests.Update(getleaverequest);
                 _context.SaveChanges();
                 return Ok(leaveRequest);
             }
