@@ -10,8 +10,9 @@ namespace EmployeeLeaveManagementSystem.Model
         public DateTime EndDate { get; set; }
         public string Reason { get; set; }
         public string Status { get; set; }
-        public int NoOfLeaves {  get; set; }    
+        public int NoOfLeaves {  get; set; }
         //public int Leavetypeid { get; set; }
+
         public int UserId { get; set; }
 
         //public Employee Employee { get; set; }
