@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { number } from 'yup';
-
+import './styles.css' 
 const LeaveRequestForm: React.FC = () => {
     const [employeeid, setEmployeeid] = useState<number>(0);
     const [startDate, setStartDate] = useState<string>('');
@@ -82,12 +82,14 @@ const LeaveRequestForm: React.FC = () => {
     }, [startDate, endDate]);
 
     return (
+        <div className="leave-form-container">
+      <h2>Apply for Leave</h2>
         <form onSubmit={handleSubmit}>
             {/* <div>
                 <label>Employee Name: </label>
                 <input type="text" value={employeeid} readOnly />
             </div> */}
-            <div>
+            <div className="form-group">
                 <label>Leave Type</label>
                 <select id="levaetype" name="Leave Type" value={leavetypeid} onChange={handleChange}>
             <option value="1">Sick</option>
@@ -95,28 +97,29 @@ const LeaveRequestForm: React.FC = () => {
             <option value="3">Other</option>
             </select>
             </div>
-            <div>
+            <div className="form-group">
                 <label>Start Date: </label>
                 <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
             </div>
-            <div>
+            <div className="form-group">
                 <label>End Date: </label>
                 <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
             </div>
-            <div>
+            <div className="form-group">
                 <label>Quantity: </label>
                 <input type="number" value={quanity} readOnly />
             </div>
-            <div>
+            <div className="form-group">
                 <label>Status: </label>
                 <input type="text" value={status} readOnly />
             </div>
-            <div>
+            <div className="form-group">
                 <label>Reson : </label>
                 <input type="text" value={reason} id="reson"  onChange={handleChangeReson}/>
             </div>
-            <button type="submit">Submit</button>
+            <button className="submit-btn" type="submit">Submit</button>
         </form>
+        </div>
     );
 };
 
