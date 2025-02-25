@@ -5,63 +5,95 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeLeaveManagementSystem.Controllers
 {
-    [Authorize]
+    // [Authorize(Roles ="Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class LeaveApprovalController : Controller
     {
         ApplicationDbContext _context;
-        public LeaveApprovalController(ApplicationDbContext context) {
+        public LeaveApprovalController(ApplicationDbContext context)
+        {
             _context = context;
 
         }
         [HttpGet]
-        public IActionResult GetLeaveDetails(ApprovalForm approvalForm)
+        public IActionResult GetLeaveDetails()
         {
 
             var Approvalform = (from a in _context.LeaveRequests
-                                where a.Status == "Submitted"
+                                join b in _context.Users on a.UserId equals b.Id
+                                where a.Status == "Pending".ToLower()
                                 select new ApprovalForm
                                 {
-                                    //EmployeeID = a.EmployeeId,
-                                    StartDate = Convert.ToDateTime(a.StartDate),
+                                    UserName = b.Username,
+                                    StartDate = a.StartDate,
                                     EndDate = a.EndDate,
-                                    Status = a.Status
+                                    Status = a.Status,
+                                    id = a.Id,
+                                    Quantity = a.NoOfLeaves
                                 }).ToList();
-            return Ok(approvalForm);
+            return Ok(Approvalform);
         }
         [HttpPost]
-        public IActionResult ApproveLeaveRequest( LeaveRequest leaveRequest)
+        public IActionResult ApproveLeaveRequest(ApprovalForm leaveRequest)
         {
-            if (leaveRequest.Status == "Approved")
+            if (leaveRequest.Status == "Approved".ToLower())
             {
-                _context.LeaveRequests.Update(leaveRequest);
-                var employee = _context.Employees.FirstOrDefault(e => e.Id == leaveRequest.UserId);
-                if (employee == null)
+                var getleaverequest = _context.LeaveRequests.Where(x => x.Id == leaveRequest.id).Select(x => new LeaveRequest
                 {
-                    return NotFound();
-                }
+                    Id = x.Id,
+                    StartDate = x.StartDate,
+                    UserId = x.UserId,
+                    EndDate = x.EndDate,
+                    Status = leaveRequest.Status,
+                    NoOfLeaves = x.NoOfLeaves,
+                    LeaveType = x.LeaveType,
+                    Reason = x.Reason
+                }).FirstOrDefault();
 
-                // Check if the employee has enough leave days
-                if (employee.LeaveBalance < leaveRequest.NoOfLeaves)
-                {
-                    return BadRequest("Insufficient leave balance.");
-                }
-
-                // Approve the leave request and update the employee's leave count
-                // leaveRequest.IsApproved = true;
-                leaveRequest.Status = leaveRequest.Status;
-                employee.LeaveBalance -= leaveRequest.NoOfLeaves;
+                _context.LeaveRequests.Update(getleaverequest);
+              
                 _context.SaveChanges();
-                return Ok(leaveRequest);
+                return Ok(getleaverequest);
             }
             else
             {
-                _context.LeaveRequests.Update(leaveRequest);
+                //leaveRequest.Reason = "Default Reson";
+                //_context.LeaveRequests.Update(q);
+                var getleaverequest = _context.LeaveRequests.Where(x => x.Id == leaveRequest.id).Select(x => new LeaveRequest
+                {
+                    Id = x.Id,
+                    StartDate = x.StartDate,
+                    UserId = x.UserId,
+                    EndDate = x.EndDate,
+                    Status = leaveRequest.Status,
+                    NoOfLeaves = x.NoOfLeaves,
+                    LeaveType = x.LeaveType,
+                    Reason = x.Reason
+                }).FirstOrDefault();
+                _context.LeaveRequests.Update(getleaverequest);
+
+                var updateUserleavebalance = _context.Users.Where(x => x.Id == getleaverequest.UserId).FirstOrDefault();
+                if (updateUserleavebalance != null)
+                {
+                    if(getleaverequest.LeaveType.ToLower() == "sick")
+                    {
+                        updateUserleavebalance.PendingSickLeaves += getleaverequest.NoOfLeaves;
+                    }
+                    else if (getleaverequest.LeaveType.ToLower() == "vacation")
+                    {
+                        updateUserleavebalance.PendingVacationLeaves += getleaverequest.NoOfLeaves;
+                    }
+                    else 
+                    {
+                        updateUserleavebalance.PendingOtherLeaves += getleaverequest.NoOfLeaves;
+                    }
+                }
+
                 _context.SaveChanges();
                 return Ok(leaveRequest);
             }
         }
-     
+
     }
 }
