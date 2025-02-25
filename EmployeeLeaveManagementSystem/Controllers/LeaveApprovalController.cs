@@ -24,7 +24,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
                                 select new ApprovalForm
                                 {
                                     //EmployeeID = a.EmployeeId,
-                                    StartDate = a.StartDate,
+                                    StartDate = Convert.ToDateTime(a.StartDate),
                                     EndDate = a.EndDate,
                                     Status = a.Status
                                 }).ToList();

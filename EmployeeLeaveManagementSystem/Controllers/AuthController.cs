@@ -1,6 +1,4 @@
 ﻿using EmployeeLeaveManagementSystem.Model;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -30,7 +28,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
                 var userdetails = (from a in _context.Users
                                        //join b in _context.Employees
                                        //on a.EmployeeId equals b.Id
-                                       //where a.Username == user.Username
+                                       where a.Username == user.Username
                                    select new
                                    {
                                        username = a.Username,
@@ -50,7 +48,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
 
             var User = (from a in _context.Users
                         where a.Username == userLogin.Username && a.Password == userLogin.Password
-                        // && a.UserRole == userLogin.UserRole
+                         //&& a.UserRole == userLogin.UserRole
                         select new User
                         {
                             Username = a.Username,
@@ -62,19 +60,28 @@ namespace EmployeeLeaveManagementSystem.Controllers
             // Replace with your user authentication logic
             if (User != null)
             {
-                //var claim = new List<Claim>()
-                //{
-                //   // new Claim(JwtRegisteredClaimNames.Sub,_config["Jwt:Subject"])
-                //   new Claim("id", User.Id.ToString()),
-                //   new Claim("Username", User.Username),
-                //   new Claim("Role", User.UserRole)
-                //};
+                var claim = new List<Claim>()
+                {
+                   // new Claim(JwtRegisteredClaimNames.Sub,_config["Jwt:Subject"])
+                   new Claim("id", User.Id.ToString()),
+                   new Claim("Username", User.Username),
+                   new Claim("Role", User.UserRole)
+                };
 
                 return new LoginUser { Username = userLogin.Username, Roles = roles };
             }
 
             return null;
         }
+        [HttpGet("id")]
+        public IActionResult GetLeaveBalance(int id)
+        {
+            var remBal = from res in _context.Users
+                         where (res.Id == id)
+                          select new { res.PendingVacationLeaves , res.PendingSickLeaves,res.PendingOtherLeaves };
+            return Ok(remBal);
+        }
+       
         private string GenerateToken(LoginUser user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
