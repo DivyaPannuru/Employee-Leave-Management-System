@@ -51,7 +51,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
             leaveRequests.Status = "Pending"; //Approve /Reject
             leaveRequests.LeaveType = leaveRequest.leaveType;
             var userbalance = _context.Users.Where(a => a.Id == leaveRequests.UserId).FirstOrDefault();
-            if (leaveRequest.leaveType == "Sick".ToLower())
+            if (leaveRequest.leaveType.ToLower() == "Sick".ToLower())
             {
               
                 if (userbalance.PendingSickLeaves >= leaveRequest.Quanity)
@@ -65,7 +65,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
                     return BadRequest("insuciffent balance");
                 }
             }
-            else if (leaveRequest.leaveType == "Vaction".ToLower())
+            else if (leaveRequest.leaveType.ToLower() == "Vaction".ToLower())
             {
                 if (userbalance.PendingVacationLeaves >= leaveRequest.Quanity)
                 {
