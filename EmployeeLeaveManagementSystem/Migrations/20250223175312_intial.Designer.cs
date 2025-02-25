@@ -4,6 +4,7 @@ using EmployeeLeaveManagementSystem;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeLeaveManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250223175312_intial")]
+    partial class intial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,13 +72,15 @@ namespace EmployeeLeaveManagementSystem.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Leavetypeid")
-                        .HasColumnType("int");
+                    b.Property<string>("LeaveType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NoOfLeaves")
                         .HasColumnType("int");
 
                     b.Property<string>("Reason")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
@@ -90,8 +95,6 @@ namespace EmployeeLeaveManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
-
                     b.ToTable("LeaveRequests");
                 });
 
@@ -103,15 +106,10 @@ namespace EmployeeLeaveManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-<<<<<<< HEAD
-=======
                     b.Property<int>("PendingOtherLeaves")
                         .HasColumnType("int");
 
@@ -121,7 +119,6 @@ namespace EmployeeLeaveManagementSystem.Migrations
                     b.Property<int>("PendingVacationLeaves")
                         .HasColumnType("int");
 
->>>>>>> Feature_Sravya
                     b.Property<string>("UserRole")
                         .HasColumnType("nvarchar(max)");
 
@@ -131,39 +128,7 @@ namespace EmployeeLeaveManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId")
-                        .IsUnique();
-
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("EmployeeLeaveManagementSystem.Model.LeaveRequest", b =>
-                {
-                    b.HasOne("EmployeeLeaveManagementSystem.Model.Employee", "Employee")
-                        .WithMany("LeaveRequest")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("EmployeeLeaveManagementSystem.Model.User", b =>
-                {
-                    b.HasOne("EmployeeLeaveManagementSystem.Model.Employee", "Employee")
-                        .WithOne("User")
-                        .HasForeignKey("EmployeeLeaveManagementSystem.Model.User", "EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("EmployeeLeaveManagementSystem.Model.Employee", b =>
-                {
-                    b.Navigation("LeaveRequest");
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

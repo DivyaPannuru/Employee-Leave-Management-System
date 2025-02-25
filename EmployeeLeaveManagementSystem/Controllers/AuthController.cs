@@ -28,6 +28,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
             if (user != null)
             {
                 var userdetails = (from a in _context.Users
+<<<<<<< HEAD
                                   join b in _context.Employees
                                   on a.EmployeeId equals b.Id
                                   where a.Username == user.Username
@@ -38,6 +39,18 @@ namespace EmployeeLeaveManagementSystem.Controllers
                                       EmployeeID= a.EmployeeId,
                                       EmployeeName = b.FirstName + b.LastName
                                   }).FirstOrDefault();
+=======
+                                       //join b in _context.Employees
+                                       //on a.EmployeeId equals b.Id
+                                       where a.Username == user.Username
+                                   select new
+                                   {
+                                       username = a.Username,
+                                       Role = a.UserRole,
+                                       EmployeeID = a.Id,
+                                       EmployeeName = a.Username
+                                   }).FirstOrDefault();
+>>>>>>> Feature_Sravya
                 var token = GenerateToken(user);
                 return Ok(new { token, userdetails });
             }
@@ -47,6 +60,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
 
         private LoginUser Authenticate(LoginUser userLogin)
         {
+<<<<<<< HEAD
             
             var User = (from a in _context.Users
                          where a.Username == userLogin.Username && a.Password == userLogin.Password
@@ -59,9 +73,24 @@ namespace EmployeeLeaveManagementSystem.Controllers
             var roles = _context.Users.Where(a => a.Username == userLogin.Username && a.Password.Equals(userLogin.Password))
                 .Select(a => a.UserRole).ToList();
             
+=======
+
+            var User = (from a in _context.Users
+                        where a.Username == userLogin.Username && a.Password == userLogin.Password
+                         //&& a.UserRole == userLogin.UserRole
+                        select new User
+                        {
+                            Username = a.Username,
+                            UserRole = a.UserRole
+                        }).FirstOrDefault();
+            var roles = _context.Users.Where(a => a.Username == userLogin.Username && a.Password.Equals(userLogin.Password))
+                .Select(a => a.UserRole).ToList();
+
+>>>>>>> Feature_Sravya
             // Replace with your user authentication logic
-            if (User !=null)
+            if (User != null)
             {
+<<<<<<< HEAD
                 //var claim = new List<Claim>()
                 //{
                 //   // new Claim(JwtRegisteredClaimNames.Sub,_config["Jwt:Subject"])
@@ -71,11 +100,34 @@ namespace EmployeeLeaveManagementSystem.Controllers
                 //};
 
                 return new LoginUser { Username = userLogin.Username , Roles=roles};
+=======
+                var claim = new List<Claim>()
+                {
+                   // new Claim(JwtRegisteredClaimNames.Sub,_config["Jwt:Subject"])
+                   new Claim("id", User.Id.ToString()),
+                   new Claim("Username", User.Username),
+                   new Claim("Role", User.UserRole)
+                };
+
+                return new LoginUser { Username = userLogin.Username, Roles = roles };
+>>>>>>> Feature_Sravya
             }
 
             return null;
         }
+<<<<<<< HEAD
 
+=======
+        [HttpGet("id")]
+        public IActionResult GetLeaveBalance(int id)
+        {
+            var remBal = from res in _context.Users
+                         where (res.Id == id)
+                          select new { res.PendingVacationLeaves , res.PendingSickLeaves,res.PendingOtherLeaves };
+            return Ok(remBal);
+        }
+       
+>>>>>>> Feature_Sravya
         private string GenerateToken(LoginUser user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -87,7 +139,11 @@ namespace EmployeeLeaveManagementSystem.Controllers
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         new Claim(ClaimTypes.Name, user.Username),
     };
+<<<<<<< HEAD
            
+=======
+
+>>>>>>> Feature_Sravya
             // Add roles as claims if the user has roles
             if (user.Roles != null && user.Roles.Any())
             {
@@ -103,7 +159,11 @@ namespace EmployeeLeaveManagementSystem.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+<<<<<<< HEAD
 
     }
+=======
+>>>>>>> Feature_Sravya
 
+    }
 }

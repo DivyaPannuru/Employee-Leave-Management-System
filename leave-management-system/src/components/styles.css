@@ -61,7 +61,11 @@ tr:nth-child(even) {
   h2 {
     margin-bottom: 15px;
     color: #333;
+<<<<<<< HEAD
   }
+=======
+  } */
+>>>>>>> Feature_Sravya
   
   /* Leave Form */
   .leave-form-container {
@@ -106,7 +110,11 @@ tr:nth-child(even) {
   .submit-btn:hover {
     background-color: #45a049;
   }
+<<<<<<< HEAD
    */
+=======
+  
+>>>>>>> Feature_Sravya
   /* Leave Requests Table */
   .leave-requests-container table {
     width: 100%;
@@ -130,4 +138,59 @@ tr:nth-child(even) {
   
   .leave-requests-container tr:hover {
     background-color: #eaeaea;
+<<<<<<< HEAD
+=======
+  }
+  .user-dashboard {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  .leave-balance {
+    margin-bottom: 20px;
+  }
+  
+  .leave-request {
+    margin-top: 30px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table, th, td {
+    border: 1px solid #ddd;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .leave-request-form {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  form div {
+    margin-bottom: 10px;
+  }
+  
+  button {
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+>>>>>>> Feature_Sravya
   }

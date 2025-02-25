@@ -47,7 +47,11 @@ const Login: React.FC = () => {
        // setRoles(data?.Roles);
         localStorage.setItem('Role', jsonResponse.userdetails.role)
         localStorage.setItem("employeeid",jsonResponse.userdetails.employeeID)
+<<<<<<< HEAD
           if(localStorage.getItem("Role")==="Admin"){
+=======
+          if(localStorage.getItem("Role")?.toLowerCase()==="admin"){
+>>>>>>> Feature_Sravya
         //   <h1>I</h1>
          navigate("/admin-dashboard", { replace: true });
         

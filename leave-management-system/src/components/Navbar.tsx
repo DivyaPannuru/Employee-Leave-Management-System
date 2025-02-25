@@ -7,7 +7,11 @@ const Navbar = () => {
 
     return (
         <nav className='navbar navbar-strong bg-light px-3'>
+<<<<<<< HEAD
             <a className='navbar-brand' href='/'>React Auth</a>
+=======
+            <a className='navbar-brand' href='/'>Leave Management System</a>
+>>>>>>> Feature_Sravya
             {
                isAuthenticated && localStorage.getItem("Role")==="Admin" &&
                 (
