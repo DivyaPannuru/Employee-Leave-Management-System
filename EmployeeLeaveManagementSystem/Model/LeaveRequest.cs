@@ -17,7 +17,6 @@ namespace EmployeeLeaveManagementSystem.Model
         //public int Leavetypeid { get; set; }
 
         public int UserId { get; set; }
-        public string LeaveType { get; set; }
 
     }
     public class LeaveForm
@@ -30,7 +29,6 @@ namespace EmployeeLeaveManagementSystem.Model
         = string.Empty;
         
         public int Quanity { get; set; } //should be auto fill 
-        public string leaveType { get; set; }
     }
  public class ApprovalForm
     {

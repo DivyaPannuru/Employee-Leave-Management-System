@@ -29,7 +29,9 @@ namespace EmployeeLeaveManagementSystem.Controllers
             var leavedetails  = from a in _context.Users
                                    join b in _context.LeaveRequests
                                    on a.Id equals b.UserId
-                               select new
+                                where b.UserId == id
+
+                                select new
                                {
                                    startDate = b.StartDate,
                                    endDate  = b.EndDate,
@@ -49,9 +51,8 @@ namespace EmployeeLeaveManagementSystem.Controllers
             leaveRequests.NoOfLeaves = leaveRequest.Quanity;
             leaveRequests.Reason = leaveRequest.Reason;
             leaveRequests.Status = "Pending"; //Approve /Reject
-            leaveRequests.LeaveType = leaveRequest.leaveType;
             var userbalance = _context.Users.Where(a => a.Id == leaveRequests.UserId).FirstOrDefault();
-            if (leaveRequest.leaveType.ToLower() == "Sick".ToLower())
+            if (leaveRequest.Reason.ToLower() == "Sick".ToLower())
             {
               
                 if (userbalance.PendingSickLeaves >= leaveRequest.Quanity)
@@ -65,7 +66,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
                     return BadRequest("insuciffent balance");
                 }
             }
-            else if (leaveRequest.leaveType.ToLower() == "Vaction".ToLower())
+            else if (leaveRequest.Reason.ToLower() == "Vacation".ToLower())
             {
                 if (userbalance.PendingVacationLeaves >= leaveRequest.Quanity)
                 {
