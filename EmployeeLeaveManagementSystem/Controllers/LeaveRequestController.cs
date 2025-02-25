@@ -49,25 +49,50 @@ namespace EmployeeLeaveManagementSystem.Controllers
             leaveRequests.NoOfLeaves = leaveRequest.Quanity;
             leaveRequests.Reason = leaveRequest.Reason;
             leaveRequests.Status = "Pending"; //Approve /Reject
+            leaveRequests.LeaveType = leaveRequest.leaveType;
+            var userbalance = _context.Users.Where(a => a.Id == leaveRequests.UserId).FirstOrDefault();
+            if (leaveRequest.leaveType == "Sick".ToLower())
+            {
+              
+                if (userbalance.PendingSickLeaves >= leaveRequest.Quanity)
+                {
+                    _context.Users
+   .Where(t => t.Id == leaveRequest.Id)
+   .ExecuteUpdate(b => b.SetProperty(x => x.PendingSickLeaves, x => x.PendingSickLeaves - leaveRequest.Quanity));
+                }
+                else
+                {
+                    return BadRequest("insuciffent balance");
+                }
+            }
+            else if (leaveRequest.leaveType == "Vaction".ToLower())
+            {
+                if (userbalance.PendingVacationLeaves >= leaveRequest.Quanity)
+                {
+                    _context.Users
+   .Where(t => t.Id == leaveRequest.Id)
+   .ExecuteUpdate(b => b.SetProperty(x => x.PendingVacationLeaves, x => x.PendingVacationLeaves - leaveRequest.Quanity));
+                }
+                else
+                {
+                    return BadRequest("insuciffent balance");
+                }
+            }
+            else 
+            {
+                if (userbalance.PendingOtherLeaves >= leaveRequest.Quanity)
+                {
+                    _context.Users
+   .Where(t => t.Id == leaveRequest.Id)
+   .ExecuteUpdate(b => b.SetProperty(x => x.PendingOtherLeaves, x => x.PendingOtherLeaves - leaveRequest.Quanity));
+                }
+                else
+                {
+                    return BadRequest("insuciffent balance");
+                }
+            }
             _context.LeaveRequests.Add(leaveRequests);
             _context.SaveChanges();
-            if (leaveRequest.Reason.ToLower().Equals("sick",StringComparison.CurrentCultureIgnoreCase)) {
-                _context.Users
-    .Where(t => t.Id == leaveRequest.Id)
-    .ExecuteUpdate(b => b.SetProperty(x => x.PendingSickLeaves, x => x.PendingSickLeaves - leaveRequest.Quanity));
-            }
-           else if (leaveRequest.Reason.Equals("vacation", StringComparison.CurrentCultureIgnoreCase))
-            {
-                _context.Users
-    .Where(t => t.Id == leaveRequest.Id)
-    .ExecuteUpdate(b => b.SetProperty(x => x.PendingVacationLeaves, x => x.PendingVacationLeaves - leaveRequest.Quanity));
-            }
-          else  if (leaveRequest.Reason.Equals("others", StringComparison.CurrentCultureIgnoreCase))
-            {
-                _context.Users
-    .Where(t => t.Id == leaveRequest.Id)
-    .ExecuteUpdate(b => b.SetProperty(x => x.PendingOtherLeaves, x => x.PendingOtherLeaves - leaveRequest.Quanity));
-            }
             return Ok(leaveRequest);
         }
        

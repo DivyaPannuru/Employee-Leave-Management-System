@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.ComponentModel.DataAnnotations;
 
 namespace EmployeeLeaveManagementSystem.Model
 {
     public class LeaveRequest
     {
+        
+
         public int Id { get; set; }
         //public int EmployeeId { get; set; }
         public DateTime StartDate { get; set; }
@@ -14,7 +17,7 @@ namespace EmployeeLeaveManagementSystem.Model
         //public int Leavetypeid { get; set; }
 
         public int UserId { get; set; }
-
+        public string LeaveType { get; set; }
 
     }
     public class LeaveForm
@@ -27,6 +30,7 @@ namespace EmployeeLeaveManagementSystem.Model
         = string.Empty;
         
         public int Quanity { get; set; } //should be auto fill 
+        public string leaveType { get; set; }
     }
  public class ApprovalForm
     {
