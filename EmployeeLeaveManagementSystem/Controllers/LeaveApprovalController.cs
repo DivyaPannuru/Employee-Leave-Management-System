@@ -47,7 +47,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
                     EndDate = x.EndDate,
                     Status = leaveRequest.Status,
                     NoOfLeaves = x.NoOfLeaves,
-                    LeaveType = x.LeaveType,
+                    //LeaveType = x.LeaveType,
                     Reason = x.Reason
                 }).FirstOrDefault();
 
@@ -68,7 +68,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
                     EndDate = x.EndDate,
                     Status = leaveRequest.Status,
                     NoOfLeaves = x.NoOfLeaves,
-                    LeaveType = x.LeaveType,
+                    //LeaveType = x.LeaveType,
                     Reason = x.Reason
                 }).FirstOrDefault();
                 _context.LeaveRequests.Update(getleaverequest);
@@ -76,11 +76,11 @@ namespace EmployeeLeaveManagementSystem.Controllers
                 var updateUserleavebalance = _context.Users.Where(x => x.Id == getleaverequest.UserId).FirstOrDefault();
                 if (updateUserleavebalance != null)
                 {
-                    if(getleaverequest.LeaveType.ToLower() == "sick")
+                    if(getleaverequest.Reason.ToLower() == "sick")
                     {
                         updateUserleavebalance.PendingSickLeaves += getleaverequest.NoOfLeaves;
                     }
-                    else if (getleaverequest.LeaveType.ToLower() == "vacation")
+                    else if (getleaverequest.Reason.ToLower() == "vacation")
                     {
                         updateUserleavebalance.PendingVacationLeaves += getleaverequest.NoOfLeaves;
                     }
