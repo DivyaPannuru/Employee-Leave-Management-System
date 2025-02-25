@@ -6,10 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeLeaveManagementSystem.Controllers
 {
-<<<<<<< HEAD
-   // [Authorize]
-=======
->>>>>>> Feature_Sravya
+    [Authorize]
+
     [ApiController]
     [Route("api/[controller]")]
     public class LeaveRequestController : ControllerBase
@@ -30,19 +28,19 @@ namespace EmployeeLeaveManagementSystem.Controllers
         [HttpGet("id")]
         public IActionResult GetAppliedLeaveDetails(int id)
         {
-            var leavedetails  = from a in _context.Users
-                                   join b in _context.LeaveRequests
-                                   on a.Id equals b.UserId
-                                where b.UserId == id
+            var leavedetails = from a in _context.Users
+                               join b in _context.LeaveRequests
+                               on a.Id equals b.UserId
+                               where b.UserId == id
 
-                                select new
+                               select new
                                {
                                    startDate = b.StartDate,
-                                   endDate  = b.EndDate,
+                                   endDate = b.EndDate,
                                    type = b.Reason,
-                                   status=b.Status,
+                                   status = b.Status,
                                };
-            return Ok( leavedetails );
+            return Ok(leavedetails);
         }
 
         [HttpPost]
@@ -50,17 +48,15 @@ namespace EmployeeLeaveManagementSystem.Controllers
         {
             var leaveRequests = new LeaveRequest();
             leaveRequests.UserId = leaveRequest.Id;
-            leaveRequests.StartDate= leaveRequest.StartDate;
+            leaveRequests.StartDate = leaveRequest.StartDate;
             leaveRequests.EndDate = leaveRequest.endDate;
             leaveRequests.NoOfLeaves = leaveRequest.Quanity;
             leaveRequests.Reason = leaveRequest.Reason;
             leaveRequests.Status = "Pending"; //Approve /Reject
-<<<<<<< HEAD
-=======
             var userbalance = _context.Users.Where(a => a.Id == leaveRequests.UserId).FirstOrDefault();
             if (leaveRequest.Reason.ToLower() == "Sick".ToLower())
             {
-              
+
                 if (userbalance.PendingSickLeaves >= leaveRequest.Quanity)
                 {
                     _context.Users
@@ -85,7 +81,7 @@ namespace EmployeeLeaveManagementSystem.Controllers
                     return BadRequest("insuciffent balance");
                 }
             }
-            else 
+            else
             {
                 if (userbalance.PendingOtherLeaves >= leaveRequest.Quanity)
                 {
@@ -98,12 +94,11 @@ namespace EmployeeLeaveManagementSystem.Controllers
                     return BadRequest("insuciffent balance");
                 }
             }
->>>>>>> Feature_Sravya
             _context.LeaveRequests.Add(leaveRequests);
             _context.SaveChanges();
             return Ok(leaveRequest);
         }
-       
+
     }
 
 }
